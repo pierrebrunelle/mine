@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Primary Meta Tags -->
+    <title>Cube Explorer - Modern 3D Minesweeper Game</title>
+    <meta name="description" content="Experience Minesweeper like never before with stunning visuals and competitive gameplay.">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="game-info">
+                <div class="mines-counter">Traps: <span id="mines-count">0</span></div>
+                <button id="new-game-btn">New Game</button>
+                <div class="timer">Time: <span id="timer">0</span></div>
+            </div>
+            <div class="controls-row">
+                <div class="difficulty">
+                    <button id="beginner">Easy</button>
+                    <button id="intermediate">Medium</button>
+                    <button id="expert">Hard</button>
+                    <button id="custom-toggle">Custom</button>
+                </div>
+                <div class="sound-controls">
+                    <button id="stats-toggle" class="icon-button">
+                        <i class="fas fa-chart-bar"></i>
+                    </button>
+                </div>
+            </div>
+            <div id="custom-controls" class="custom-controls hidden">
+                <div class="slider-container">
+                    <label for="rows-slider">Rows: <span id="rows-value">9</span></label>
+                    <input type="range" id="rows-slider" min="5" max="20" value="9" class="slider">
+                </div>
+                <div class="slider-container">
+                    <label for="cols-slider">Columns: <span id="cols-value">9</span></label>
+                    <input type="range" id="cols-slider" min="5" max="30" value="9" class="slider">
+                </div>
+                <div class="slider-container">
+                    <label for="mines-slider">Traps: <span id="mines-value">10</span></label>
+                    <input type="range" id="mines-slider" min="1" max="99" value="10" class="slider">
+                </div>
+                <button id="apply-custom">Apply</button>
+            </div>
+        </div>
+        <div id="game-container">
+            <div id="game-board" class="game-board"></div>
+        </div>
+
+        <!-- Stats Panel -->
+        <div id="stats-panel" class="stats-panel hidden">
+            <div class="stats-header">
+                <h3>Game Statistics</h3>
+                <button id="stats-close" class="icon-button">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="stats-content">
+                <div class="stat-row">
+                    <div class="stat-item">
+                        <div class="stat-title">Games Played</div>
+                        <div class="stat-value" id="games-played">0</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-title">Games Won</div>
+                        <div class="stat-value" id="games-won">0</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-title">Win Rate</div>
+                        <div class="stat-value" id="win-rate">0%</div>
+                    </div>
+                </div>
+                <div class="stats-divider"></div>
+                <div class="best-times">
+                    <h4>Best Times</h4>
+                    <div class="best-time-row">
+                        <div class="difficulty-label">Easy:</div>
+                        <div class="time-value" id="best-time-beginner">-</div>
+                    </div>
+                    <div class="best-time-row">
+                        <div class="difficulty-label">Medium:</div>
+                        <div class="time-value" id="best-time-intermediate">-</div>
+                    </div>
+                    <div class="best-time-row">
+                        <div class="difficulty-label">Hard:</div>
+                        <div class="time-value" id="best-time-expert">-</div>
+                    </div>
+                </div>
+                <div class="stats-divider"></div>
+                <div class="actions">
+                    <button id="reset-stats" class="action-button">Reset Stats</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game Completion Card -->
+        <div id="completion-card" class="completion-card hidden">
+            <div class="completion-header">
+                <h3 id="completion-title">Victory!</h3>
+                <button id="completion-close" class="icon-button">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="completion-content">
+                <div class="completion-stats">
+                    <div class="completion-stat">
+                        <div class="stat-label">Time</div>
+                        <div class="stat-value" id="completion-time">0:00</div>
+                    </div>
+                    <div class="completion-stat">
+                        <div class="stat-label">Difficulty</div>
+                        <div class="stat-value" id="completion-difficulty">Easy</div>
+                    </div>
+                    <div class="completion-stat">
+                        <div class="stat-label">Score</div>
+                        <div class="stat-value" id="completion-score">0</div>
+                    </div>
+                </div>
+                <div class="completion-message" id="completion-message">
+                    You've mastered this challenge! Share your victory with friends!
+                </div>
+                <div class="social-share">
+                    <button id="share-twitter" class="share-button twitter">
+                        <i class="fab fa-twitter"></i> Share on X
+                    </button>
+                    <button id="copy-result" class="share-button copy">
+                        <i class="fas fa-copy"></i> Copy Result
+                    </button>
+                </div>
+                <div class="completion-actions">
+                    <button id="play-again" class="action-button">Play Again</button>
+                    <button id="next-difficulty" class="action-button">Try Next Level</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Toast Notification -->
+        <div id="toast" class="toast hidden">
+            <div id="toast-message">Result copied to clipboard!</div>
+        </div>
+
+        <!-- Confetti Canvas for Victory -->
+        <canvas id="confetti-canvas" class="confetti-canvas hidden"></canvas>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>
+                Created by <a href="https://x.com/pjlbrunelle" target="_blank" rel="noopener noreferrer">Pierre Brunelle (@pjlbrunelle)</a> |
+                Currently working on <a href="https://github.com/pixeltable/pixeltable" target="_blank" rel="noopener noreferrer">Pixeltable</a>
+            </p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
