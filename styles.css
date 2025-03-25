@@ -317,54 +317,169 @@ body {
 
 @media (max-width: 768px) {
     .container {
-        width: 95%;
+        width: 100%;
         padding: 15px;
+        margin: 0;
+        border-radius: 0;
+        min-height: 100vh;
+        box-shadow: none;
+        display: flex;
+        flex-direction: column;
     }
 
-    .cell {
-        width: 35px;
-        height: 35px;
+    .header {
+        margin-bottom: 20px;
+    }
+
+    .game-info {
+        flex-wrap: wrap;
+        gap: 12px;
+        justify-content: center;
+    }
+
+    .mines-counter, .timer {
+        padding: 8px 16px;
+        font-size: 1rem;
+        min-width: 120px;
+        text-align: center;
+    }
+
+    #new-game-btn {
+        padding: 12px 24px;
+        font-size: 1rem;
+        width: 100%;
+        margin: 8px 0;
     }
 
     .controls-row {
         flex-direction: column;
+        gap: 12px;
+    }
+
+    .difficulty {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+        width: 100%;
+    }
+
+    .difficulty button {
+        padding: 12px;
+        font-size: 1rem;
+        height: 45px;
     }
 
     .sound-controls {
-        margin-left: 0;
-        margin-top: 10px;
+        margin: 8px 0;
         justify-content: center;
+    }
+
+    .icon-button {
+        width: 45px;
+        height: 45px;
+    }
+
+    .game-board {
+        margin: 15px auto;
+        gap: 4px;
+        padding: 10px;
+        background: rgba(255, 255, 255, 0.03);
+        border-radius: 12px;
+    }
+
+    .cell {
+        width: 32px;
+        height: 32px;
+        font-size: 1rem;
+        border-width: 1px;
+    }
+
+    /* Push footer to bottom on mobile */
+    #game-container {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .footer {
+        margin-top: auto;
+        padding: 20px 0;
     }
 }
 
 @media (max-width: 480px) {
+    .container {
+        padding: 12px;
+    }
+
     .cell {
-        width: 30px;
-        height: 30px;
+        width: 28px;
+        height: 28px;
+        font-size: 0.9rem;
     }
 
     .game-info {
         flex-direction: column;
-        align-items: center;
-        gap: 10px;
+        align-items: stretch;
     }
 
-    .difficulty {
-        flex-wrap: wrap;
-        gap: 5px;
+    .mines-counter, .timer {
+        text-align: center;
+        width: 100%;
     }
 
     .difficulty button {
-        flex-basis: calc(50% - 5px);
-        margin: 0;
+        height: 40px;
+        padding: 8px;
     }
 
-    .share-button {
-        flex: 1;
+    .custom-controls {
+        padding: 12px;
     }
 
-    .completion-actions {
-        flex-direction: column;
+    .slider-container {
+        margin-bottom: 15px;
+    }
+
+    /* Improve slider touch targets */
+    .slider::-webkit-slider-thumb {
+        width: 24px;
+        height: 24px;
+    }
+
+    .slider::-moz-range-thumb {
+        width: 24px;
+        height: 24px;
+    }
+}
+
+/* Add touch-friendly styles */
+@media (hover: none) {
+    .cell:hover {
+        transform: none;
+        box-shadow: none;
+    }
+
+    .share-button:hover {
+        transform: none;
+        box-shadow: none;
+    }
+
+    .cell:active {
+        background-color: var(--hover-color);
+    }
+
+    .share-button:active {
+        opacity: 0.8;
+    }
+}
+
+/* Add safe area insets for modern mobile devices */
+@supports (padding: max(0px)) {
+    .container {
+        padding-left: max(10px, env(safe-area-inset-left));
+        padding-right: max(10px, env(safe-area-inset-right));
+        padding-bottom: max(10px, env(safe-area-inset-bottom));
     }
 }
 
